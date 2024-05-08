@@ -7,7 +7,8 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -O3")
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
-file(GLOB srcs *.cpp *.h*)
+file(GLOB srcs *.h*) # *.cpp)
 
-add_executable(kdtree ${srcs})
-target_link_libraries(kdtree ${OpenCV_LIBS})
+add_library(kdtree ${srcs})
+target_link_libraries(kdtree ${OpenCV_LIBS} Qt::Core)
+

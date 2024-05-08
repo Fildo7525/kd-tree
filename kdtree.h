@@ -7,6 +7,31 @@
 #include <exception>
 #include <functional>
 
+class MyPoint : public std::array<double, 2>
+{
+public:
+
+	// dimension of space (or "k" of k-d tree)
+	// KDTree class accesses this member
+	static const int DIM = 2;
+
+	// the constructors
+	MyPoint() {}
+	MyPoint(double x, double y)
+	{ 
+		(*this)[0] = x;
+		(*this)[1] = y;
+	}
+	MyPoint(const QPointF &point)
+	{
+		(*this)[0] = point.x();
+		(*this)[1] = point.y();
+	}
+
+	// conversion to OpenCV Point2d
+	operator cv::Point2d() const { return cv::Point2d((*this)[0], (*this)[1]); }
+};
+
 namespace kdt
 {
 	/** @brief k-d tree class.
