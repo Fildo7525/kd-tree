@@ -1,11 +1,14 @@
 #ifndef __KDTREE_H__
 #define __KDTREE_H__
 
+#include <opencv2/core/types.hpp>
 #include <vector>
 #include <numeric>
 #include <algorithm>
 #include <exception>
 #include <functional>
+#include <QPointF>
+#include <QVector>
 
 class MyPoint : public std::array<double, 2>
 {
@@ -56,6 +59,24 @@ namespace kdt
 			clear();
 
 			points_ = points;
+
+			std::vector<int> indices(points.size());
+			std::iota(std::begin(indices), std::end(indices), 0);
+
+			root_ = buildRecursive(indices.data(), (int)points.size(), 0);
+		}
+
+		/** @brief Re-builds k-d tree.
+		*/
+		void build(const QVector<QPointF>& points)
+		{
+			clear();
+
+			std::vector<MyPoint> myPoints;
+			std::transform(points.begin(), points.end(), std::back_inserter(myPoints), [](const QPointF &point) {
+				return MyPoint(point);
+			});
+			points_ = myPoints;
 
 			std::vector<int> indices(points.size());
 			std::iota(std::begin(indices), std::end(indices), 0);
